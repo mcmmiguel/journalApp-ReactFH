@@ -19,7 +19,10 @@ export const RegisterPage = () => {
 
     const {
         formState, displayName, email, password, onInputChange,
-        isFormValid, displayNameValid, emailValid, passwordValid, } = useForm(formData);
+        isFormValid, displayNameValid, emailValid, passwordValid,
+    } = useForm(formData, formValidations);
+
+    console.log(displayNameValid);
 
     const onSubmit = (event) => {
         event.preventDefault();
@@ -39,7 +42,7 @@ export const RegisterPage = () => {
                             name='displayName'
                             value={displayName}
                             onChange={onInputChange}
-                            error={!displayNameValid}
+                            error={displayNameValid}
                             helperText={displayNameValid}
                         />
                     </Grid>
