@@ -9,9 +9,17 @@ const formData = {
     displayName: 'Miguel',
 };
 
+const formValidations = {
+    email: [(value) => value.includes('@'), 'Invalid email address.'],
+    password: [(value) => value.length >= 6, 'The password must have more than 6 characters.'],
+    displayName: [(value) => value.length >= 1, 'Name is required'],
+};
+
 export const RegisterPage = () => {
 
-    const { displayName, email, password, onInputChange } = useForm(formData);
+    const {
+        formState, displayName, email, password, onInputChange,
+        isFormValid, displayNameValid, emailValid, passwordValid, } = useForm(formData);
 
     const onSubmit = (event) => {
         event.preventDefault();
@@ -31,6 +39,8 @@ export const RegisterPage = () => {
                             name='displayName'
                             value={displayName}
                             onChange={onInputChange}
+                            error={!displayNameValid}
+                            helperText={displayNameValid}
                         />
                     </Grid>
 
