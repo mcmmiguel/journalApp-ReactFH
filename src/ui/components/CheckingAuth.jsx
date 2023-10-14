@@ -8,7 +8,7 @@ export const CheckingAuth = () => {
             direction="column" //Use flexbox implicitly
             alignItems="center"
             justifyContent="center"
-            sx={{ minHeight: '100vh', backgroundColor: 'primary.main', padding: 4 }}
+            sx={{ minHeight: '100vh', backgroundColor: 'primary.main', padding: 4, }}
         >
             <Grid item justifyContent='center'>
                 <CircularProgress color='warning' />
