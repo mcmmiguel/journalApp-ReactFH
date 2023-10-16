@@ -1,7 +1,8 @@
 import { collection, doc, setDoc } from "firebase/firestore/lite";
 import { firebaseDB } from "../../firebase/config";
-import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes, setSaving, updateNote } from "./journalSlice";
+import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes, setPhotosToActiveNote, setSaving, updateNote } from "./journalSlice";
 import { loadNotes } from "../../helpers/loadNotes";
+import { fileUpload } from "../../helpers/fileUpload";
 
 export const startNewNote = () => {
 
@@ -62,4 +63,22 @@ export const startSaveNote = () => {
 
 
     }
-}
+};
+
+export const startUploadingFiles = (files = []) => {
+    return async (dispatch) => {
+
+        dispatch(setSaving());
+
+        //Se hace de este modo y no con un for porque de ese modo cada una de las peticiones serían secuencia 
+        const fileUploadPromises = [];
+        for (const file of files) {
+            fileUploadPromises.push(fileUpload(file));
+        }
+
+        const photosURLs = await Promise.all(fileUploadPromises);
+
+        dispatch(setPhotosToActiveNote(photosURLs));
+
+    }
+};
