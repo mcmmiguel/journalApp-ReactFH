@@ -1,7 +1,8 @@
 
 export const fileUpload = async (file) => {
 
-    if (!file) throw new Error('There is no files');
+    // if (!file) throw new Error('There is no files');
+    if (!file) return null;
 
     const cloudURL = 'https://api.cloudinary.com/v1_1/dmrhtcc5z/upload';
 
@@ -23,8 +24,10 @@ export const fileUpload = async (file) => {
         return cloudResp.secure_url;
 
     } catch (error) {
-        console.log(error);
-        throw new Error(error.message);
+        // console.log(error);  
+        // throw new Error(error.message);
+        return null;
+
     }
 
 };
