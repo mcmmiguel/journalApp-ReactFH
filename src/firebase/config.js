@@ -1,6 +1,18 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore/lite"
+import { getEnvironments } from "../helpers/getEnvironments";
+
+
+// console.log(import.meta.env);
+const {
+    VITE_APIKEY,
+    VITE_AUTHDOMAIN,
+    VITE_PROJECTID,
+    VITE_STORAGEBUCKET,
+    VITE_MESSAGINGSENDERID,
+    VITE_APPID,
+} = getEnvironments();
 
 // Dev / Prod
 /*const firebaseConfig = {
@@ -15,13 +27,14 @@ import { getFirestore } from "firebase/firestore/lite"
 
 // Testing 
 const firebaseConfig = {
-    apiKey: "AIzaSyC4sDm52GPR_BAtCRvl7HmzeCD127tOdXA",
-    authDomain: "testing-react-7b6f6.firebaseapp.com",
-    projectId: "testing-react-7b6f6",
-    storageBucket: "testing-react-7b6f6.appspot.com",
-    messagingSenderId: "755402632955",
-    appId: "1:755402632955:web:43601a9f1980995763ca5e"
+    apiKey: VITE_APIKEY,
+    authDomain: VITE_AUTHDOMAIN,
+    projectId: VITE_PROJECTID,
+    storageBucket: VITE_STORAGEBUCKET,
+    messagingSenderId: VITE_MESSAGINGSENDERID,
+    appId: VITE_APPID,
 };
+console.log(firebaseConfig);
 
 export const firebaseApp = initializeApp(firebaseConfig);
 
