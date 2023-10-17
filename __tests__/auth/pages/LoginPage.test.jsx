@@ -8,6 +8,21 @@ import { authSlice } from '../../../src/store/auth';
 import { startGoogleSignIn } from '../../../src/store/auth/thunks';
 import { notAuthenticatedState } from '../../fixtures/authFixtures';
 
+const mockStartGoogleSignIn = jest.fn();
+const mockStartLoginWithEmailPassword = jest.fn();
+
+jest.mock('../../../src/store/auth/thunks', () => ({
+    startGoogleSignIn: () => mockStartGoogleSignIn,
+    startLoginWithEmailPassword: ({ email, password }) => {
+        return () => mockStartLoginWithEmailPassword({ email, password })
+    },
+}));
+
+jest.mock('react-redux', () => ({
+    ...jest.requireActual('react-redux'),
+    useDispatch: () => (fn = () => { }) => fn(),
+}));
+
 const store = configureStore({
     reducer: {
         auth: authSlice.reducer
@@ -15,15 +30,14 @@ const store = configureStore({
     preloadedState: {
         auth: notAuthenticatedState,
     }
-})
+});
 
-const mockStartGoogleSignIn = jest.fn();
-
-jest.mock('../../../src/store/auth/thunks', () => ({
-    startGoogleSignIn: () => mockStartGoogleSignIn
-}));
 
 describe('Pruebas en <LoginPage />', () => {
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
 
     test('Debe de mostrar el componente correctamente', () => {
 
@@ -55,6 +69,37 @@ describe('Pruebas en <LoginPage />', () => {
         fireEvent.click(googleBtn);
 
         expect(mockStartGoogleSignIn).toHaveBeenCalled();
+
+    });
+
+    test('Submit debe de llamar startLoginWithEmailPassword', () => {
+
+        const email = 'miguelcobian00@gmail.com';
+        const password = '129992ms';
+
+        render(
+            <Provider store={store}>
+                <MemoryRouter>
+                    <LoginPage />
+                </MemoryRouter>
+            </Provider>
+        );
+
+        screen.debug();
+
+        const emailField = screen.getByRole('textbox', { name: 'Email' });
+        fireEvent.change(emailField, { target: { name: 'email', value: email } });
+
+        const passwordField = screen.getByTestId('password');
+        fireEvent.change(passwordField, { target: { name: 'password', value: password } });
+
+        const loginForm = screen.getByLabelText('submit-form');
+        fireEvent.submit(loginForm);
+
+        expect(mockStartLoginWithEmailPassword).toHaveBeenCalledWith({
+            email: email,
+            password: password,
+        })
 
     });
 
