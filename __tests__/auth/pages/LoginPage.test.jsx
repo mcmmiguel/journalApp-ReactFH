@@ -85,8 +85,6 @@ describe('Pruebas en <LoginPage />', () => {
             </Provider>
         );
 
-        screen.debug();
-
         const emailField = screen.getByRole('textbox', { name: 'Email' });
         fireEvent.change(emailField, { target: { name: 'email', value: email } });
 
