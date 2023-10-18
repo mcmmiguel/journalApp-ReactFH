@@ -29,14 +29,11 @@ export const LoginPage = () => {
 
     const onSubmit = (event) => {
         event.preventDefault();
-        //! No es esta la accion
         dispatch(startLoginWithEmailPassword({ email, password }));
-        console.log({ email, password });
     };
 
     const onGoogleSignIn = () => {
         dispatch(startGoogleSignIn());
-        console.log('onGoogleSignIn');
     }
 
     return (
